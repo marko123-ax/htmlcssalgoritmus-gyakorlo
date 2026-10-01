@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f5ef">
+  <title>Munkafüzet — HTML, CSS és algoritmusok</title>
+  <link rel="stylesheet" href="munkafuzet.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topbar">
+      <a class="brand" href="index.html"><span class="brand-mark">&lt;/&gt;</span><span>tag<b>tár</b></span></a>
+      <a class="back-link" href="index.html">Vissza a gyakorlóhoz <span aria-hidden="true">→</span></a>
+    </div>
+
+    <div class="hero">
+      <p class="eyebrow">HTML · CSS · algoritmus</p>
+      <h1>Munkafüzet</h1>
+      <p class="lead">Tanuld meg, mire valók az elemek, tulajdonságok és algoritmusok. Minden témánál találsz magyarázatot és egy rövid példát.</p>
+      <div class="topic-tabs" aria-label="Témakörök">
+        <a href="#html">HTML <span>29</span></a>
+        <a href="#css">CSS <span>27</span></a>
+        <a href="#algoritmus">Algoritmusok <span>15</span></a>
+        <a href="#sandbox">Ciklus-sandbox</a>
+        <a href="#feladatok">Gyakorlófeladatok</a>
+      </div>
+    </div>
+
+    <div class="workbook-section" id="html">
+      <div class="section-heading">
+        <p class="eyebrow">01 / dokumentum és tartalom</p>
+        <h2>HTML elemek</h2>
+        <p>A HTML adja meg a weboldal tartalmának szerkezetét. A tagek nyitó és záró jelei közé kerül a tartalom; néhány elem, például a <b>&lt;br&gt;</b> és az <b>&lt;img&gt;</b>, nem igényel záró taget.</p>
+      </div>
+      <div class="lesson-grid">
+        <div class="lesson"><h3>&lt;html&gt;</h3><p>A teljes HTML-dokumentum gyökéreleme. Ebben található az oldal fejrésze és törzse; a <b>lang</b> attribútummal megadható az oldal nyelve.</p><p class="example">Példa: <b>&lt;html lang="hu"&gt; ... &lt;/html&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;!DOCTYPE html&gt;</h3><p>A fájl elején jelzi a böngészőnek, hogy HTML5 dokumentumot olvas. Nem tartalmi elem, hanem a szabványos megjelenítés kérése.</p><p class="example">Példa: <b>&lt;!DOCTYPE html&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;head&gt;</h3><p>A dokumentum beállításai és hivatkozásai kerülnek ide. Tartalma jellemzően nem látszik az oldal fő részén.</p><p class="example">Példa: <b>&lt;head&gt; ... &lt;title&gt;Oldalam&lt;/title&gt; ... &lt;/head&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;meta charset="UTF-8"&gt;</h3><p>Megadja a szöveg karakterkódolását, így a magyar ékezetes betűk megfelelően jelenhetnek meg.</p><p class="example">Példa: <b>&lt;meta charset="UTF-8"&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;title&gt;</h3><p>A böngészőfülön vagy könyvjelzőben megjelenő oldalnév. A head részbe kerül, nem az oldal látható főcímének helyére.</p><p class="example">Példa: <b>&lt;title&gt;Az első oldalam&lt;/title&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;link&gt;</h3><p>Külső fájlt kapcsol a dokumentumhoz, például stíluslapot. A <b>href</b> mutat a fájlra, a <b>rel</b> jelöli a kapcsolat típusát.</p><p class="example">Példa: <b>&lt;link rel="stylesheet" href="style.css"&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;body&gt;</h3><p>Az oldal megjelenítendő tartalma kerül bele: többek között a címsorok, bekezdések, képek és táblázatok.</p><p class="example">Példa: <b>&lt;body&gt; ... látható tartalom ... &lt;/body&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;h1&gt;–&lt;h6&gt;</h3><p>Hat szintű címsor áll rendelkezésre. A h1 a főcím, a h2 egy nagyobb alfejezet címe; a további szintek mélyebb tagolást adnak.</p><p class="example">Példa: <b>&lt;h1&gt;Főcím&lt;/h1&gt; &lt;h2&gt;Alcím&lt;/h2&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;p&gt;</h3><p>Egy összetartozó szövegrészt, vagyis bekezdést jelöl. A böngésző rendszerint függőleges helyet hagy a bekezdések között.</p><p class="example">Példa: <b>&lt;p&gt;Ez egy bekezdés.&lt;/p&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;br&gt;</h3><p>Új sort kezd, de nem nyit új bekezdést. Olyan helyen használd, ahol a sortörés a tartalom része, például egy verssorban.</p><p class="example">Példa: <b>Első sor&lt;br&gt;Második sor</b></p></div>
+        <div class="lesson"><h3>&lt;strong&gt;</h3><p>Fontos vagy hangsúlyos szöveget jelöl. A böngésző gyakran félkövérrel mutatja, a képernyőolvasók számára is jelentése van.</p><p class="example">Példa: <b>&lt;strong&gt;Fontos!&lt;/strong&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;b&gt;</h3><p>Félkövér megjelenést ad, de önmagában nem jelzi, hogy a szöveg fontosabb. Jelentésbeli hangsúlyhoz inkább a strong való.</p><p class="example">Példa: <b>&lt;b&gt;Félkövér felirat&lt;/b&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;i&gt;</h3><p>Tipográfiailag elkülöníti a szöveget, amit a böngésző gyakran dőlt betűvel jelenít meg. Nem jelent automatikusan fontosságot.</p><p class="example">Példa: <b>&lt;i&gt;idegen kifejezés&lt;/i&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;sup&gt;</h3><p>Felső indexként, az alapvonal fölött jeleníti meg a tartalmát. Kitevőkhöz vagy egyes jelölésekhez hasznos.</p><p class="example">Példa: <b>x&lt;sup&gt;2&lt;/sup&gt;</b> eredménye: x²</p></div>
+        <div class="lesson"><h3>&lt;sub&gt;</h3><p>Alsó indexként, az alapvonal alatt jeleníti meg a tartalmát. Kémiai képletekben gyakori.</p><p class="example">Példa: <b>H&lt;sub&gt;2&lt;/sub&gt;O</b> eredménye: H₂O</p></div>
+        <div class="lesson"><h3>&lt;div&gt;</h3><p>Általános blokkszintű csoportosító elem. Több tartalmat foghat össze, hogy együtt lehessen őket formázni; nincs saját tartalmi jelentése.</p><p class="example">Példa: <b>&lt;div class="doboz"&gt; ... &lt;/div&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;img&gt;</h3><p>Képet illeszt be. Az <b>src</b> attribútum a kép helye, az <b>alt</b> pedig szöveges leírás, ami a kép helyett is használható.</p><p class="example">Példa: <b>&lt;img src="kep.jpg" alt="Hegyek"&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;a&gt;</h3><p>Kattintható hivatkozást készít. A <b>href</b> attribútum adja meg, hová vezessen a link.</p><p class="example">Példa: <b>&lt;a href="masik.html"&gt;Másik oldal&lt;/a&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;!-- megjegyzés --&gt;</h3><p>A forráskódban olvasható megjegyzés, amely nem jelenik meg az oldal látható tartalmaként. Jegyzetelésre használható.</p><p class="example">Példa: <b>&lt;!-- Ez egy megjegyzés --&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;ul&gt;</h3><p>Számozatlan felsorolást készít, amikor az elemek sorrendje nem fontos. A lista tartalmát li elemek adják.</p><p class="example">Példa: <b>&lt;ul&gt; ... &lt;/ul&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;ol&gt;</h3><p>Számozott listát készít, ahol az elemek sorrendje számít, például egy recept vagy útmutató lépéseinél.</p><p class="example">Példa: <b>&lt;ol&gt; ... &lt;/ol&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;li&gt;</h3><p>Egy listaelemet jelöl. ul vagy ol listába helyezd, így a böngésző a megfelelő jelölést vagy sorszámot teszi elé.</p><p class="example">Példa: <b>&lt;li&gt;Első elem&lt;/li&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;table&gt;</h3><p>Sorokból és oszlopokból álló adattáblázatot hoz létre. Táblázatos adatokhoz való, nem az egész oldal elrendezéséhez.</p><p class="example">Példa: <b>&lt;table&gt; ... sorok és cellák ... &lt;/table&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;tr&gt;</h3><p>Egy táblázatsort fog össze. A soron belül fejléc- vagy adatcellák állnak.</p><p class="example">Példa: <b>&lt;tr&gt; ... cellák ... &lt;/tr&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;td&gt;</h3><p>Táblázat-adatcellát jelöl. Olyan adatot tartalmaz, amely egy sor és egy oszlop metszetéhez tartozik.</p><p class="example">Példa: <b>&lt;td&gt;Budapest&lt;/td&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;th&gt;</h3><p>Táblázat-fejléccellát jelöl, vagyis megnevezi a sort vagy oszlopot. A böngésző és a kisegítő technológiák is fejlécnek értelmezik.</p><p class="example">Példa: <b>&lt;th&gt;Város&lt;/th&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;thead&gt;</h3><p>A táblázat fejlécsorait csoportosítja. Ettől a táblázat felépítése könnyebben áttekinthető.</p><p class="example">Példa: <b>&lt;thead&gt; ... oszlopnevek ... &lt;/thead&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;tbody&gt;</h3><p>A táblázat fő adatsorait fogja össze, külön a fejléctől és az esetleges összesítő lábrésztől.</p><p class="example">Példa: <b>&lt;tbody&gt; ... adat sorok ... &lt;/tbody&gt;</b></p></div>
+        <div class="lesson"><h3>&lt;tfoot&gt;</h3><p>A táblázat záró vagy összegző sorait tartalmazza, például egy végösszeget.</p><p class="example">Példa: <b>&lt;tfoot&gt; ... összesítés ... &lt;/tfoot&gt;</b></p></div>
+      </div>
+    </div>
+
+    <div class="workbook-section" id="css">
+      <div class="section-heading">
+        <p class="eyebrow">02 / megjelenés és elrendezés</p>
+        <h2>CSS tulajdonságok</h2>
+        <p>A CSS szabály alakja általában <b>szelektor { tulajdonság: érték; }</b>. A szelektor megkeresi az elemet, a tulajdonság és az érték pedig leírja, hogyan nézzen ki.</p>
+      </div>
+      <div class="lesson-grid">
+        <div class="lesson"><h3>margin</h3><p>Az elem körüli külső térköz. A szomszédos elemek távolságát állítja; a padding az elemen belüli helyet növeli.</p><p class="example">Példa: <b>margin: 16px;</b></p></div>
+        <div class="lesson"><h3>padding</h3><p>A tartalom és az elem kerete közötti belső térköz. A háttérszín a padding területén is megjelenik.</p><p class="example">Példa: <b>padding: 12px 20px;</b></p></div>
+        <div class="lesson"><h3>width</h3><p>Az elem szélességét állítja be. A százalékos érték jellemzően a szülőelem méretéhez igazodik.</p><p class="example">Példa: <b>width: 80%;</b></p></div>
+        <div class="lesson"><h3>height</h3><p>Az elem magasságát állítja be. Ha fix magasságot adsz meg, ellenőrizd, hogy a tartalom elfér-e benne.</p><p class="example">Példa: <b>height: 120px;</b></p></div>
+        <div class="lesson"><h3>color</h3><p>Az előtér, leggyakrabban a szöveg színét állítja be. Sok gyermekelem örökli, hacsak nem kap saját színt.</p><p class="example">Példa: <b>color: #245b43;</b></p></div>
+        <div class="lesson"><h3>background-color</h3><p>Az elem hátterének színe. A szöveg és a háttér között legyen elég kontraszt, hogy olvasható maradjon.</p><p class="example">Példa: <b>background-color: white;</b></p></div>
+        <div class="lesson"><h3>background-size</h3><p>A háttérkép méretét szabályozza. A cover kitölti a területet, a contain a teljes képet látható méretben tartja.</p><p class="example">Példa: <b>background-size: cover;</b></p></div>
+        <div class="lesson"><h3>border</h3><p>Rövidített beállítás a keret vastagságához, vonalstílusához és színéhez. A keret láthatóságához stílust is adj meg.</p><p class="example">Példa: <b>border: 1px solid #dce3d9;</b></p></div>
+        <div class="lesson"><h3>border-color</h3><p>A keret színét adja meg. A keretnek emellett látható stílus és vastagság is kell.</p><p class="example">Példa: <b>border-color: green;</b></p></div>
+        <div class="lesson"><h3>border-top-color</h3><p>Csak a felső keret színét állítja be, a többi oldalt nem módosítja.</p><p class="example">Példa: <b>border-top-color: tomato;</b></p></div>
+        <div class="lesson"><h3>border-radius</h3><p>Lekerekíti a keret sarkait. Nagyobb érték nagyobb ívet eredményez.</p><p class="example">Példa: <b>border-radius: 8px;</b></p></div>
+        <div class="lesson"><h3>border-collapse</h3><p>Táblázatnál meghatározza, hogy a szomszédos cellák kerete összeolvadjon-e, így elkerülhető a dupla vonal.</p><p class="example">Példa: <b>border-collapse: collapse;</b></p></div>
+        <div class="lesson"><h3>box-sizing</h3><p>A content-box a szélességen felül számolja a paddinget és keretet. A border-box ezeket is beleszámítja a megadott méretbe.</p><p class="example">Példa: <b>box-sizing: border-box;</b></p></div>
+        <div class="lesson"><h3>box-shadow</h3><p>Árnyékot helyez az elem doboza mögé, ezzel mélységérzetet ad. Az árnyék nem változtatja meg az elem helyét az elrendezésben.</p><p class="example">Példa: <b>box-shadow: 0 4px 12px gray;</b></p></div>
+        <div class="lesson"><h3>font</h3><p>Több betűbeállítás rövidített megadására szolgál. Egyetlen szabályban a stílus, vastagság, méret és betűcsalád is beállítható.</p><p class="example">Példa: <b>font: italic 700 16px Georgia;</b></p></div>
+        <div class="lesson"><h3>font-family</h3><p>Megadja a használandó betűcsaládot. Több név is felsorolható tartalékként arra az esetre, ha egy betű nem érhető el.</p><p class="example">Példa: <b>font-family: Georgia, serif;</b></p></div>
+        <div class="lesson"><h3>font-size</h3><p>A szöveg méretét állítja be. Megadható például pixelben vagy a környező elemhez viszonyított egységben.</p><p class="example">Példa: <b>font-size: 18px;</b></p></div>
+        <div class="lesson"><h3>font-style</h3><p>A betű alakját szabályozza, például normálra vagy dőltre állítja. A vastagságot a font-weight módosítja.</p><p class="example">Példa: <b>font-style: italic;</b></p></div>
+        <div class="lesson"><h3>font-weight</h3><p>A betű vastagságát szabályozza. Félkövér stílushoz gyakran a bold vagy a 700-as érték használatos.</p><p class="example">Példa: <b>font-weight: 700;</b></p></div>
+        <div class="lesson"><h3>text-align</h3><p>A szöveget igazítja vízszintesen az elemben. Lehetséges értéke például a left, center vagy right.</p><p class="example">Példa: <b>text-align: center;</b></p></div>
+        <div class="lesson"><h3>vertical-align</h3><p>Inline tartalmak vagy táblázatcellák függőleges igazítását állítja. Nem általános eszköz bármilyen doboz függőleges középre rendezésére.</p><p class="example">Példa: <b>vertical-align: middle;</b></p></div>
+        <div class="lesson"><h3>align-items</h3><p>Flexboxban a keresztirányú tengely mentén igazít. Sorirányú elrendezésnél többnyire függőlegesen, oszlopnál vízszintesen.</p><p class="example">Példa: <b>align-items: center;</b></p></div>
+        <div class="lesson"><h3>gap</h3><p>Flexbox- vagy grid-elemek között állít be egységes rést. Nem tesz külső térközt a teljes csoport köré.</p><p class="example">Példa: <b>gap: 12px;</b></p></div>
+        <div class="lesson"><h3>.név — class szelektor</h3><p>A ponttal kezdődő szelektor az adott class attribútummal rendelkező elemeket választja ki. Ugyanazt az osztályt több elem is használhatja.</p><p class="example">Példa: <b>.kiemelt { color: green; }</b></p></div>
+        <div class="lesson"><h3>#név — id szelektor</h3><p>A kettőskereszttel kezdődő szelektor egy adott id érték alapján választ elemet. Az id-t egyedinek szánjuk; több elem közös stílusához inkább class való.</p><p class="example">Példa: <b>#fejlec { height: 80px; }</b></p></div>
+        <div class="lesson"><h3>:root</h3><p>A dokumentum legfelső elemét választja ki. Gyakori helye a CSS-változók megadása, hogy azok az egész oldalon használhatók legyenek.</p><p class="example">Példa: <b>:root { --fo-szin: green; }</b></p></div>
+        <div class="lesson"><h3>z-index</h3><p>Az egymást fedő elemek rétegsorrendjét befolyásolja. Nagyobb érték általában előrébb helyez egy elemet azonos rétegkörnyezetben.</p><p class="example">Példa: <b>z-index: 2;</b></p></div>
+      </div>
+    </div>
+
+    <div class="workbook-section" id="algoritmus">
+      <div class="section-heading">
+        <p class="eyebrow">03 / lépések és ismétlés</p>
+        <h2>Algoritmusok</h2>
+        <p>Az algoritmus egy probléma megoldásának pontos lépéssora. Előbb megtervezheted pszeudokóddal vagy folyamatábrával, aztán leírhatod egy programozási nyelven.</p>
+      </div>
+      <div class="lesson-grid">
+        <div class="lesson"><h3>Algoritmus</h3><p>Véges számú, egyértelmű lépés, amely egy feladat bemenetéből megadott módon eredményt állít elő. Egy algoritmusnak tudnia kell befejeződni.</p><p class="example">Példa: kérj be két számot, add össze őket, majd írd ki az eredményt.</p></div>
+        <div class="lesson"><h3>Pszeudokód</h3><p>Az algoritmus programnyelvtől független, egyszerű leírása. A cél a logika megértése, nem a pontos programnyelvi szabályok követése.</p><p class="example">Példa: BE: a, b → ÖSSZEG: a + b → KI: összeg</p></div>
+        <div class="lesson"><h3>Folyamatábra</h3><p>Az algoritmus lépéseit alakzatokkal, az útvonalat pedig nyilakkal ábrázolja. A döntések elágaznak, a nyilak megmutatják, mi következik.</p><p class="example">Példa: Start → adatbekérés → döntés → eredmény → End</p></div>
+        <div class="lesson"><h3>Start / End — ovális</h3><p>A folyamatábra kezdő- és végpontja. Megmutatja, honnan indul a végrehajtás, illetve hol fejeződik be.</p><p class="example">Példa: START → ... → END</p></div>
+        <div class="lesson"><h3>Művelet — téglalap</h3><p>Számítást, értékadást vagy más végrehajtandó utasítást jelöl. Például itt számoljuk ki két adat összegét.</p><p class="example">Példa: összeg = a + b</p></div>
+        <div class="lesson"><h3>Döntés — rombusz</h3><p>Eldöntendő feltételt tartalmaz. Az eredménytől függően külön útvonalon folytatódik a folyamat, például igen vagy nem irányban.</p><p class="example">Példa: a &gt; b?</p></div>
+        <div class="lesson"><h3>Bemenet / kimenet — paralelogramma</h3><p>Adat beolvasását vagy eredmény megjelenítését jelöli. A bemenet érkezhet például a felhasználótól, a kimenet pedig lehet képernyőre írt szöveg.</p><p class="example">Példa: „Adj meg egy számot” / „Az eredmény: 12”</p></div>
+      </div>
+      <div class="flowchart">
+        <h3>A folyamatábra alakzatai</h3>
+        <div class="shape-list">
+          <div class="shape-row"><div class="flow-shape start-shape">START / END</div><p>Ovális: a folyamat eleje vagy vége.</p></div>
+          <div class="shape-row"><div class="flow-shape process-shape">Művelet</div><p>Téglalap: számítás vagy utasítás.</p></div>
+          <div class="shape-row"><div class="flow-shape decision-shape"><span>Feltétel?</span></div><p>Rombusz: döntési pont, például igaz/hamis elágazás.</p></div>
+          <div class="shape-row"><div class="flow-shape input-shape">Adat</div><p>Paralelogramma: adat beolvasása vagy eredmény kiírása.</p></div>
+        </div>
+      </div>
+      <div class="lesson-grid loop-grid">
+        <div class="lesson"><h3>for — számlálós ciklus</h3><p>Használd, ha előre tudod, hányszor kell ismételni. A számláló minden körben változik; figyeld meg a kezdőértéket, a feltételt és a léptetést.</p><p class="example">1-től 5-ig: írd ki a számot, majd növeld eggyel.</p></div>
+        <div class="lesson"><h3>while — elöltesztelős ciklus</h3><p>A feltételt először ellenőrzi, és csak igaz esetén hajtja végre a ciklusmagot. Emiatt nulla alkalommal is lefuthat; a cikluson belül változzon a feltétel.</p><p class="example">Amíg a szám kisebb 5-nél: növeld a számot eggyel.</p></div>
+        <div class="lesson"><h3>do-while — hátultesztelős ciklus</h3><p>Előbb lefuttatja a ciklusmagot, utána ellenőrzi a feltételt. Legalább egyszer végrehajtódik, ezért például legalább egy adatbekérésre alkalmas.</p><p class="example">Kérj be egy számot, amíg az nem pozitív.</p></div>
+        <div class="lesson"><h3>Ciklus</h3><p>Utasítások ismételt végrehajtása. Minden ismétlésben változzon a számláló vagy a feltételt befolyásoló adat, különben a ciklus nem biztos, hogy véget ér.</p><p class="example">Ismételd háromszor: írd ki, hogy „Szia!”.</p></div>
+        <div class="lesson"><h3>Ciklusfeltétel</h3><p>Logikai vizsgálat, amely eldönti, hogy folytatódjon-e az ismétlés. Elöltesztelős ciklusnál a törzs előtt, hátultesztelős ciklusnál utána ellenőrizzük.</p><p class="example">Példa: amíg a próbálkozások száma kisebb 3-nál.</p></div>
+        <div class="lesson"><h3>Buborékrendezés</h3><p>Egymás melletti értékeket hasonlít össze. Ha rossz sorrendben állnak, felcseréli őket; az ismételt menetek során a nagyobb értékek a sorozat vége felé jutnak.</p><p class="example">[4, 2, 3] → [2, 4, 3] → [2, 3, 4]</p></div>
+        <div class="lesson"><h3>Összehasonlítás</h3><p>Megvizsgáljuk a két szomszédos értéket, és eldöntjük, megfelelő-e a sorrendjük. Növekvő rendezésnél az elsőnek nem szabad nagyobbnak lennie a másodiknál.</p><p class="example">4 és 2: 4 nagyobb, ezért cserére van szükség.</p></div>
+        <div class="lesson"><h3>Csere</h3><p>Két érték helyet cserél a sorozatban. A buborékrendezésben mindig a hibás sorrendben álló szomszédos párt rendezzük át.</p><p class="example">[4, 2] csere után [2, 4]</p></div>
+      </div>
+    </div>
+
+    <div class="workbook-section sandbox-section" id="sandbox">
+      <div class="section-heading">
+        <p class="eyebrow">Interaktív gyakorlás</p>
+        <h2>Próbáld ki a ciklusokat</h2>
+        <p>Állítsd be a kezdőértéket és az ismétlések számát, majd léptesd a programot. Ugyanazt a feladatot hasonlíthatod össze for, while és do-while formában.</p>
+      </div>
+      <div class="loop-tabs" role="group" aria-label="Ciklusforma">
+        <button class="loop-tab" type="button" data-loop-mode="for" aria-pressed="true">for</button>
+        <button class="loop-tab" type="button" data-loop-mode="while" aria-pressed="false">while</button>
+        <button class="loop-tab" type="button" data-loop-mode="doWhile" aria-pressed="false">do-while</button>
+      </div>
+      <div class="sandbox-grid">
+        <div class="sandbox-settings">
+          <label for="loop-start">Kezdőérték</label>
+          <input id="loop-start" type="number" min="0" max="20" value="1">
+          <label for="loop-repetitions">Ismétlések száma</label>
+          <input id="loop-repetitions" type="number" min="0" max="20" value="5">
+          <p class="sandbox-note">Próbáld ki a 0 ismétlést is: a do-while akkor is végrehajtja a ciklusmagot egyszer.</p>
+          <div class="sandbox-actions">
+            <button class="sandbox-button primary" id="loop-step" type="button">Egy lépés</button>
+            <button class="sandbox-button" id="loop-run" type="button">Futtatás</button>
+            <button class="sandbox-button reset" id="loop-reset" type="button">Újrakezdés</button>
+          </div>
+        </div>
+        <div class="sandbox-output">
+          <div class="sandbox-pane">
+            <h3>Program</h3>
+            <pre><code id="loop-code"></code></pre>
+          </div>
+          <div class="sandbox-pane trace-pane">
+            <h3>Futás nyomkövetése</h3>
+            <p class="sandbox-status" id="loop-status" aria-live="polite"></p>
+            <ol class="loop-trace" id="loop-trace" aria-label="A ciklus lépései"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="workbook-section practice-section" id="feladatok">
+      <div class="section-heading">
+        <p class="eyebrow">04 / ellenőrizd magad</p>
+        <h2>Gyakorlófeladatok</h2>
+        <p>Próbáld meg megválaszolni a kérdéseket, aztán ellenőrizd a megoldásokat.</p>
+      </div>
+      <div class="practice-grid">
+        <div class="practice-card"><h3>HTML</h3><p>Melyik tag készít bekezdést? Melyik tag jelöli a táblázat egyik sorát? Mivel adsz meg képernyőolvasónak szöveges képleírást?</p><p class="answer"><b>Megoldás:</b> &lt;p&gt;, &lt;tr&gt;, az &lt;img&gt; elem alt attribútumával.</p></div>
+        <div class="practice-card"><h3>CSS</h3><p>Melyik tulajdonság állítja a külső térközt? Melyik a belsőt? Hogyan célzol meg egy „kiemelt” class nevű elemet?</p><p class="answer"><b>Megoldás:</b> margin, padding, .kiemelt</p></div>
+        <div class="practice-card"><h3>Ciklusok</h3><p>Melyik ciklus fut legalább egyszer? Melyik ciklust választanád, ha pontosan tízszer kell ismételni?</p><p class="answer"><b>Megoldás:</b> do-while; for.</p></div>
+        <div class="practice-card"><h3>Folyamatábra</h3><p>Melyik alakzat jelöl döntést? Melyik alakzatban szerepel a bemenet vagy a kimenet?</p><p class="answer"><b>Megoldás:</b> rombusz; paralelogramma.</p></div>
+        <div class="practice-card"><h3>Buborékrendezés</h3><p>A [5, 2] növekvő sorrendben van? Mit kell tenni ezzel a szomszédos párral?</p><p class="answer"><b>Megoldás:</b> Nincs megfelelő sorrendben; cseréld fel őket, így [2, 5] lesz.</p></div>
+      </div>
+    </div>
+
+    <div class="footer"><a href="index.html">Vissza a kártyás gyakorlóhoz</a><span>HTML · CSS · algoritmus</span></div>
+  </div>
+  <script>
+    const loopModeButtons = document.querySelectorAll(".loop-tab");
+    const loopStartInput = document.getElementById("loop-start");
+    const loopRepetitionsInput = document.getElementById("loop-repetitions");
+    const loopCode = document.getElementById("loop-code");
+    const loopStatus = document.getElementById("loop-status");
+    const loopTrace = document.getElementById("loop-trace");
+    const loopStepButton = document.getElementById("loop-step");
+    const loopRunButton = document.getElementById("loop-run");
+    let loopMode = "for";
+    let loopRun = null;
+
+    function loopSettings() {
+      const start = Math.max(0, Math.min(20, Number.parseInt(loopStartInput.value, 10) || 0));
+      const repetitions = Math.max(0, Math.min(20, Number.parseInt(loopRepetitionsInput.value, 10) || 0));
+      loopStartInput.value = String(start);
+      loopRepetitionsInput.value = String(repetitions);
+      return { start, repetitions, end: start + repetitions };
+    }
+
+    function renderLoopCode() {
+      const { start, end } = loopSettings();
+      const examples = {
+        for: `for (let i = ${start}; i < ${end}; i++) {\n  console.log(i);\n}`,
+        while: `let i = ${start};\nwhile (i < ${end}) {\n  console.log(i);\n  i++;\n}`,
+        doWhile: `let i = ${start};\ndo {\n  console.log(i);\n  i++;\n} while (i < ${end});`
+      };
+      loopCode.textContent = examples[loopMode];
+    }
+
+    function resetLoop() {
+      const { start, repetitions, end } = loopSettings();
+      loopRun = { value: start, repetitions, end, iteration: 0, output: [], finished: false };
+      loopTrace.replaceChildren();
+      renderLoopCode();
+      if (loopMode !== "doWhile" && repetitions === 0) {
+        loopRun.finished = true;
+        loopStatus.textContent = "A feltétel már az első ellenőrzésnél hamis. A ciklusmag egyszer sem fut le.";
+      } else if (loopMode === "doWhile" && repetitions === 0) {
+        loopStatus.textContent = "A do-while a feltétel ellenőrzése előtt egyszer lefuttatja a ciklusmagot.";
+      } else {
+        loopStatus.textContent = "A futás készen áll. Lépj egyet, vagy futtasd végig.";
+      }
+      loopStepButton.disabled = loopRun.finished;
+      loopRunButton.disabled = loopRun.finished;
+    }
+
+    function stepLoop() {
+      if (loopRun.finished) return;
+      const currentValue = loopRun.value;
+      loopRun.output.push(currentValue);
+      loopRun.iteration += 1;
+      loopRun.value += 1;
+      const conditionIsTrue = loopRun.value < loopRun.end;
+      const row = document.createElement("li");
+      row.className = "trace-step";
+      const value = document.createElement("strong");
+      value.textContent = `${loopRun.iteration}. kör · i = ${currentValue}`;
+      const condition = document.createElement("span");
+      condition.textContent = `${loopMode === "doWhile" ? "Ciklusmag után" : "Következő feltétel"}: ${conditionIsTrue ? "igaz, folytatódik" : "hamis, leáll"}`;
+      row.append(value, condition);
+      loopTrace.append(row);
+
+      if (!conditionIsTrue) {
+        loopRun.finished = true;
+        loopStatus.textContent = `Vége. A kiírt értékek: ${loopRun.output.join(", ")}. Összesen ${loopRun.output.length} ismétlés.`;
+      } else {
+        loopStatus.textContent = `Következő érték: ${loopRun.value}. Eddig kiírva: ${loopRun.output.join(", ")}.`;
+      }
+      loopStepButton.disabled = loopRun.finished;
+      loopRunButton.disabled = loopRun.finished;
+    }
+
+    loopModeButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        loopMode = button.dataset.loopMode;
+        loopModeButtons.forEach(tab => tab.setAttribute("aria-pressed", String(tab === button)));
+        resetLoop();
+      });
+    });
+
+    loopStartInput.addEventListener("change", resetLoop);
+    loopRepetitionsInput.addEventListener("change", resetLoop);
+    loopStepButton.addEventListener("click", stepLoop);
+    loopRunButton.addEventListener("click", () => {
+      while (!loopRun.finished) stepLoop();
+    });
+    document.getElementById("loop-reset").addEventListener("click", resetLoop);
+    resetLoop();
+  </script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f5ef">
+  <title>Tagtár — HTML, CSS és algoritmus gyakorló</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182821;
+      --muted: #65736b;
+      --paper: #f3f5ef;
+      --white: #fffefa;
+      --line: #dce3d9;
+      --green: #245b43;
+      --green-soft: #e3eee5;
+      --orange: #e8754f;
+      --orange-soft: #fae9e1;
+      --shadow: 0 18px 55px rgba(33, 57, 43, .09);
+      --radius: 10px;
+      box-sizing: border-box;
+    }
+
+    *, *::before, *::after { box-sizing: inherit; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: radial-gradient(#d8e0d5 0.7px, transparent 0.7px);
+      background-size: 19px 19px;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .shell { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; min-height: 86px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 11px; background: var(--green); color: white; font: 700 20px Georgia, serif; }
+    .brand-name { font: 700 22px Georgia, "Times New Roman", serif; letter-spacing: 0; }
+    .brand-name span { color: var(--orange); }
+    .top-note { color: var(--muted); font-size: 13px; }
+    .workbook-link { margin-left: auto; color: var(--green); font-size: 13px; font-weight: 700; text-decoration: none; }
+    .workbook-link:hover { text-decoration: underline; }
+
+    main { padding: 42px 0 56px; }
+    .intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 9px; color: var(--green); font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+    h1 { margin: 0; font: 500 clamp(32px, 5vw, 47px)/1.05 Georgia, "Times New Roman", serif; letter-spacing: 0; }
+    .intro-copy { max-width: 370px; margin: 0 0 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+    .workspace { display: grid; grid-template-columns: 226px minmax(0, 1fr); min-height: 508px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); box-shadow: var(--shadow); }
+    .sidebar { padding: 24px 18px; border-right: 1px solid var(--line); background: #fbfcf8; }
+    .side-label { margin: 0 0 11px 8px; color: #89948c; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; }
+    .mode-list { display: grid; gap: 5px; margin-bottom: 27px; }
+    .mode-button, .filter-button { display: flex; align-items: center; width: 100%; min-height: 42px; padding: 0 10px; gap: 10px; border: 1px solid transparent; border-radius: 7px; background: transparent; cursor: pointer; text-align: left; font-size: 13px; transition: background .16s, border-color .16s, transform .16s; }
+    .mode-button:hover, .filter-button:hover { background: #f0f4ed; }
+    .mode-button:active, .filter-button:active { transform: translateY(1px); }
+    .mode-button[aria-pressed="true"], .filter-button[aria-pressed="true"] { border-color: #d5e2d6; background: var(--green-soft); color: #184a32; font-weight: 700; }
+    .mode-icon { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 6px; background: #edf0e9; color: var(--green); font-size: 13px; font-weight: 700; }
+    .mode-button[aria-pressed="true"] .mode-icon { background: #cfe1d1; }
+    .filter-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+    .filter-button { min-height: 36px; padding-left: 11px; color: var(--muted); font-size: 12px; }
+    .filter-count { margin-left: auto; color: #87938a; font: 12px ui-monospace, monospace; }
+    .side-foot { margin: 28px 8px 0; padding-top: 15px; border-top: 1px solid var(--line); color: #7a867e; font-size: 11px; line-height: 1.6; }
+
+    .practice { display: flex; min-width: 0; flex-direction: column; padding: 25px 30px 23px; }
+    .practice-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .mode-title { margin: 0; font-size: 13px; font-weight: 700; }
+    .counter { color: var(--muted); font: 12px ui-monospace, monospace; white-space: nowrap; }
+    .progress-track { height: 4px; margin-top: 13px; overflow: hidden; border-radius: 4px; background: #edf0e9; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: var(--orange); transition: width .3s ease; }
+    .question-area { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; min-height: 350px; padding: 30px 10px 25px; text-align: center; animation: arrive .35s ease both; }
+    @keyframes arrive { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .question-tag { margin: 0 0 15px; color: var(--orange); font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+    .question { max-width: 610px; margin: 0; font: 500 clamp(23px, 3.4vw, 34px)/1.27 Georgia, "Times New Roman", serif; letter-spacing: 0; }
+    .question.code { padding: 13px 18px; border: 1px solid var(--line); border-radius: 8px; background: #f4f6f1; color: var(--green); font: 600 18px/1.5 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+    .hint { min-height: 21px; margin: 13px 0 0; color: var(--muted); font-size: 12px; }
+    .answer-zone { width: min(100%, 580px); margin-top: 23px; }
+    .choice-list { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .choice-button { min-height: 49px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 7px; background: white; cursor: pointer; text-align: left; font-size: 13px; line-height: 1.4; transition: border-color .15s, background .15s; }
+    .choice-button:hover:not(:disabled) { border-color: #9bbba2; background: #f7faf5; }
+    .choice-button:disabled { cursor: default; }
+    .choice-button.correct { border-color: #80b38d; background: #e7f3e8; color: #225834; }
+    .choice-button.wrong { border-color: #e5a08a; background: #fff0ea; color: #873b28; }
+    .answer-form { display: flex; gap: 8px; }
+    .answer-input { width: 100%; min-width: 0; min-height: 47px; padding: 0 13px; border: 1px solid #cfd9ce; border-radius: 7px; outline: none; background: white; font-size: 14px; }
+    .answer-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(36, 91, 67, .12); }
+    .action-button { min-height: 44px; padding: 0 17px; border: 0; border-radius: 7px; background: var(--green); color: white; cursor: pointer; font-size: 13px; font-weight: 700; transition: background .15s, transform .15s; }
+    .action-button:hover { background: #194831; }
+    .action-button:active { transform: translateY(1px); }
+    .action-button.secondary { border: 1px solid var(--line); background: white; color: var(--ink); }
+    .action-button.secondary:hover { background: #f3f6f0; }
+    .feedback { min-height: 23px; margin: 12px 0 0; font-size: 13px; font-weight: 700; }
+    .feedback.good { color: #267044; }
+    .feedback.bad { color: #ad5038; }
+    .explanation { display: none; margin-top: 12px; padding: 13px 15px; border: 1px solid #dce3d9; border-radius: 8px; background: #f7f8f3; color: var(--ink); font-size: 13px; line-height: 1.6; text-align: left; }
+    .explanation.visible { display: block; animation: arrive .2s ease both; }
+    .explanation strong { color: var(--green); }
+    .explanation p { margin: 4px 0 0; }
+    .answer-reveal { display: none; margin: 20px 0 0; padding: 15px 18px; border: 1px solid #d8e5d7; border-radius: 8px; background: #f3f8f1; color: var(--green); font: 600 16px/1.45 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+    .answer-reveal.visible { display: block; animation: arrive .2s ease both; }
+    .self-check { display: none; justify-content: center; gap: 9px; margin-top: 13px; }
+    .self-check.visible { display: flex; }
+    .bottom-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 17px; border-top: 1px solid var(--line); }
+    .score-line { color: var(--muted); font-size: 12px; }
+    .score-line strong { color: var(--ink); font: 700 13px ui-monospace, monospace; }
+    .score-summary { display: flex; flex-wrap: wrap; gap: 5px 16px; }
+    .next-button { min-width: 110px; }
+    .next-button:disabled { background: #b5c3b7; cursor: default; }
+    .empty-state { color: var(--muted); font-size: 14px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 28px, 560px); }
+      .topbar { min-height: 69px; }
+      .top-note { font-size: 11px; }
+      .workbook-link { font-size: 12px; }
+      main { padding-top: 29px; }
+      .intro { display: block; margin-bottom: 20px; }
+      .intro-copy { margin-top: 12px; }
+      .workspace { grid-template-columns: 1fr; }
+      .sidebar { padding: 14px 14px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .side-label { margin: 0 0 8px 3px; }
+      .mode-list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-bottom: 13px; }
+      .mode-button { min-height: 58px; flex-direction: column; justify-content: center; gap: 4px; padding: 4px 2px; text-align: center; font-size: 10px; }
+      .mode-icon { width: 21px; height: 21px; }
+      .filter-list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+      .filter-button { justify-content: center; min-height: 32px; padding: 0 4px; font-size: 11px; }
+      .filter-count { margin-left: 4px; font-size: 10px; }
+      .side-foot { display: none; }
+      .practice { min-height: 440px; padding: 19px 16px 16px; }
+      .question-area { min-height: 310px; padding: 27px 0 20px; }
+      .choice-list { grid-template-columns: 1fr; gap: 7px; }
+      .choice-button { min-height: 43px; }
+      .answer-zone { margin-top: 18px; }
+    }
+
+    @media (max-width: 380px) {
+      .shell { width: calc(100% - 20px); }
+      .brand-name { font-size: 19px; }
+      .top-note { max-width: 108px; text-align: right; }
+      .workbook-link { max-width: 108px; text-align: right; }
+      .filter-button { font-size: 10px; }
+      .filter-count { display: none; }
+      .answer-form { flex-direction: column; }
+      .answer-form .action-button { min-height: 43px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Tagtár kezdőlap">
+        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span class="brand-name">tag<span>tár</span></span>
+      </a>
+      <a class="workbook-link" href="munkafuzet.html">Munkafüzet <span aria-hidden="true">→</span></a>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Kis lépések, biztos alapok</p>
+          <h1 id="page-title">Tanuld meg. <span style="color: var(--green)">Használd.</span></h1>
+        </div>
+        <p class="intro-copy">Gyakorold a HTML tageket, a CSS tulajdonságokat és az algoritmusok alapjait többféle feladattal.</p>
+      </section>
+
+      <section class="workspace" aria-label="Gyakorlófelület">
+        <aside class="sidebar" aria-label="Feladatbeállítások">
+          <p class="side-label">Feladattípus</p>
+          <nav class="mode-list" aria-label="Feladattípusok">
+            <button class="mode-button" type="button" data-mode="flash" aria-pressed="true"><span class="mode-icon" aria-hidden="true">▤</span>Kártyák</button>
+            <button class="mode-button" type="button" data-mode="choice" aria-pressed="false"><span class="mode-icon" aria-hidden="true">☷</span>Választós</button>
+            <button class="mode-button" type="button" data-mode="type" aria-pressed="false"><span class="mode-icon" aria-hidden="true">⌨</span>Beírós</button>
+            <button class="mode-button" type="button" data-mode="code" aria-pressed="false"><span class="mode-icon" aria-hidden="true">&lt;/&gt;</span>Kódfelismerő</button>
+          </nav>
+          <p class="side-label">Témakör</p>
+          <div class="filter-list" aria-label="Témakör szűrése">
+            <button class="filter-button" type="button" data-filter="all" aria-pressed="true">Mind<span class="filter-count" id="all-count"></span></button>
+            <button class="filter-button" type="button" data-filter="html" aria-pressed="false">HTML<span class="filter-count" id="html-count"></span></button>
+            <button class="filter-button" type="button" data-filter="css" aria-pressed="false">CSS<span class="filter-count" id="css-count"></span></button>
+            <button class="filter-button" type="button" data-filter="algorithm" aria-pressed="false">Algoritmus<span class="filter-count" id="algorithm-count"></span></button>
+          </div>
+          <p class="side-foot">A beírt válasznál a kis- és nagybetű nem számít. Minden körben új kérdéseket kapsz.</p>
+        </aside>
+
+        <section class="practice" aria-label="Aktuális feladat">
+          <div class="practice-top">
+            <p class="mode-title" id="mode-title">Tanulókártya</p>
+            <span class="counter" id="counter" aria-live="polite">1 / 0</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-label="Kör haladása" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="question-area" id="question-area" aria-live="polite">
+            <p class="question-tag" id="question-tag">HTML · TAG</p>
+            <h2 class="question" id="question">Betöltés…</h2>
+            <p class="hint" id="hint"></p>
+            <div class="answer-zone" id="answer-zone"></div>
+            <p class="feedback" id="feedback" aria-live="assertive"></p>
+            <div class="explanation" id="explanation" aria-live="polite"><strong>Miért ez a helyes?</strong><p id="explanation-text"></p></div>
+            <div class="answer-reveal" id="answer-reveal"></div>
+            <div class="self-check" id="self-check">
+              <button class="action-button secondary" type="button" data-result="wrong">Még gyakorlom</button>
+              <button class="action-button" type="button" data-result="right">Tudtam</button>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <div class="score-summary" aria-live="polite">
+              <span class="score-line">Helyes válaszok: <strong id="score">0</strong></span>
+              <span class="score-line">Hibás válaszok: <strong id="wrong-score">0</strong></span>
+            </div>
+            <button class="action-button next-button" type="button" id="next-button" disabled>Következő <span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const items = [
+      { category: "html", term: "<br>", meaning: "Sortörés. A szöveget a következő sorban folytatja.", aliases: ["br", "br tag", "sortörés"] },
+      { category: "html", term: "<sup>", meaning: "Felső index. Például egy kitevő megjelenítésére használható.", aliases: ["sup", "sup tag", "felső index"] },
+      { category: "html", term: "<sub>", meaning: "Alsó index. Például egy képlet alsó indexéhez használható.", aliases: ["sub", "sub tag", "alsó index"] },
+      { category: "html", term: "<h1>–<h6>", meaning: "Címsorok hat szintje: a h1 a legfontosabb, a h6 a legkisebb rangú.", aliases: ["h1-h6", "h1", "címsor", "címsorok"] },
+      { category: "html", term: "<i>", meaning: "A szöveget hagyományosan dőlt stílusban jeleníti meg.", aliases: ["i", "i tag", "dőlt", "időlt", "dőlt szöveg"] },
+      { category: "html", term: "<img>", meaning: "Kép beillesztése a dokumentumba.", aliases: ["img", "img tag", "kép", "kép beillesztése"] },
+      { category: "html", term: "<!-- megjegyzés -->", meaning: "HTML-megjegyzés. A böngésző nem jeleníti meg az oldal tartalmaként.", aliases: ["<!-- -->", "megjegyzés", "html megjegyzés"] },
+      { category: "html", term: "<body>", meaning: "A weboldal látható tartalmát tartalmazó dokumentumrész.", aliases: ["body", "body tag", "weboldal teste"] },
+      { category: "html", term: "<strong>", meaning: "Fontosságot jelez; a böngésző általában félkövérrel jeleníti meg.", aliases: ["strong", "strong tag", "hangsúlyosan félkövér"] },
+      { category: "html", term: "<p>", meaning: "Bekezdést jelöl.", aliases: ["p", "p tag", "bekezdés"] },
+      { category: "html", term: "<title>", meaning: "A böngészőfülön és az ablak címében megjelenő oldal címe.", aliases: ["title", "title tag", "weboldal címe"] },
+      { category: "html", term: "<div>", meaning: "Általános, blokkszintű csoportosító elem.", aliases: ["div", "div tag", "csoportosító", "blokkszintű"] },
+      { category: "html", term: "<head>", meaning: "A dokumentum fejlécadatait, például a címet és hivatkozásokat tartalmazza.", aliases: ["head", "head tag", "fejrész", "weboldal fejrésze"] },
+      { category: "html", term: "<table>", meaning: "Táblázatot hoz létre.", aliases: ["table", "table tag", "táblázat"] },
+      { category: "html", term: "<b>", meaning: "A szöveget félkövér stílusban jeleníti meg, külön fontosság jelzése nélkül.", aliases: ["b", "b tag", "félkövér"] },
+      { category: "html", term: "<!DOCTYPE html>", meaning: "A böngészőnek jelzi, hogy HTML5 dokumentumot kell feldolgoznia.", aliases: ["doctype", "doctype html", "dokumentum típusa"] },
+      { category: "html", term: "<link>", meaning: "A dokumentumot külső fájllal, például egy CSS-stíluslappal kapcsolja össze.", aliases: ["link", "link tag", "külső fájl"] },
+      { category: "html", term: "<ol>", meaning: "Számozott listát hoz létre.", aliases: ["ol", "ol tag", "számozott lista"] },
+      { category: "html", term: "<li>", meaning: "Egy listaelem tartalmát jelöli.", aliases: ["li", "li tag", "listaelem", "lista elem"] },
+      { category: "html", term: "<ul>", meaning: "Számozatlan listát hoz létre.", aliases: ["ul", "ul tag", "számozatlan lista"] },
+      { category: "html", term: "<a>", meaning: "Hivatkozást, vagyis linket helyez el az oldalra.", aliases: ["a", "a tag", "link", "hivatkozás"] },
+      { category: "html", term: "<tr>", meaning: "Táblázatsort jelöl.", aliases: ["tr", "tr tag", "táblázatsor"] },
+      { category: "html", term: "<td>", meaning: "Táblázat egy adatcelláját jelöli.", aliases: ["td", "td tag", "táblázat adata", "adatcella"] },
+      { category: "html", term: "<thead>", meaning: "A táblázat fejlécsorainak csoportját jelöli.", aliases: ["thead", "thead tag", "táblázat fejrésze"] },
+      { category: "html", term: "<tbody>", meaning: "A táblázat törzsét, vagyis az adatsorok csoportját jelöli.", aliases: ["tbody", "tbody tag", "táblázat teste", "táblázat törzse"] },
+      { category: "html", term: "<th>", meaning: "Táblázat fejléccelláját jelöli.", aliases: ["th", "th tag", "táblázat headingje", "fejléccella"] },
+      { category: "html", term: "<tfoot>", meaning: "A táblázat lábrészét, például az összesítő sort jelöli.", aliases: ["tfoot", "tfoot tag", "táblázat lábrésze"] },
+      { category: "html", term: "<html>", meaning: "A teljes HTML-dokumentum gyökéreleme.", aliases: ["html", "html tag", "weboldal leíró tagje"] },
+      { category: "html", term: "<meta charset=\"UTF-8\">", meaning: "UTF-8 karakterkódolást állít be a dokumentumnak.", aliases: ["meta charset=utf-8", "utf-8", "karakterkódolás", "karakter kódolása"] },
+      { category: "css", term: "border-radius", meaning: "Az elem sarkainak lekerekítését állítja be.", aliases: ["sarkak lekerekítése", "lekerekítés"] },
+      { category: "css", term: "margin", meaning: "Az elem körüli külső térközt állítja be.", aliases: ["külső térköz"] },
+      { category: "css", term: "background-color", meaning: "Az elem hátterének színét állítja be.", aliases: ["háttérszín", "háttér szín"] },
+      { category: "css", term: "background-size", meaning: "A háttérkép méretét állítja be.", aliases: ["háttér mérete", "háttérkép mérete"] },
+      { category: "css", term: "align-items", meaning: "Flexboxban a keresztirányú igazítást állítja: sorirányban függőlegesen, oszlopirányban vízszintesen.", aliases: ["flexbox igazítás", "elemek igazítása"] },
+      { category: "css", term: "text-align", meaning: "A szöveg vízszintes igazítását állítja be.", aliases: ["szöveg rendezés", "szöveg igazítása"] },
+      { category: "css", term: "padding", meaning: "Az elem tartalma és a kerete közötti belső térközt állítja be.", aliases: ["belső térköz"] },
+      { category: "css", term: "font-size", meaning: "A szöveg betűméretét állítja be.", aliases: ["betűméret", "betű méret"] },
+      { category: "css", term: "vertical-align", meaning: "Inline elemek, inline-block elemek vagy táblázatcellák függőleges igazítását állítja be.", aliases: ["függőleges igazítás", "vertikális igazítás"] },
+      { category: "css", term: "gap", meaning: "Flexbox- vagy grid-elrendezésben az elemek közötti rést állítja be.", aliases: ["elemek közötti rés", "elemek közti rés"] },
+      { category: "css", term: "font-family", meaning: "A használandó betűcsaládot adja meg.", aliases: ["betűcsalád", "betű család"] },
+      { category: "css", term: "width", meaning: "Az elem szélességét állítja be.", aliases: ["szélesség"] },
+      { category: "css", term: "color", meaning: "A szöveg színét állítja be.", aliases: ["betűszín", "betű szín", "szöveg színe"] },
+      { category: "css", term: ".név", meaning: "Osztály szerinti CSS-szelektor. HTML-ben a class attribútummal jelöljük az elemet.", aliases: [".class", "class", "osztály", "class jelölése"] },
+      { category: "css", term: "font-style", meaning: "A betű stílusát, például a normál vagy dőlt megjelenést állítja be.", aliases: ["betű stílus", "betűstílus"] },
+      { category: "css", term: "border", meaning: "Az elem körüli keret vastagságát, stílusát és színét állítja be.", aliases: ["keret", "elem körüli keret"] },
+      { category: "css", term: "#név", meaning: "Azonosító szerinti CSS-szelektor. HTML-ben az id attribútum értékével céloz.", aliases: ["#id", "id", "azonosító", "id jelölése"] },
+      { category: "css", term: "height", meaning: "Az elem magasságát állítja be.", aliases: ["magasság"] },
+      { category: "css", term: "font-weight", meaning: "A betű vastagságát, például a félkövérséget állítja be.", aliases: ["betű vonalvastagsága", "betűvastagság", "vonalvastagság"] },
+      { category: "css", term: "box-shadow", meaning: "Árnyékot ad az elem dobozához.", aliases: ["elem árnyéka", "árnyék"] },
+      { category: "css", term: "z-index", meaning: "Az egymást átfedő elemek rétegsorrendjét állítja be.", aliases: ["z index", "rétegsorrend"] },
+      { category: "css", term: "border-collapse", meaning: "Meghatározza, hogy a táblázat szomszédos cellakeretei összeolvadjanak-e.", aliases: ["border összevonás", "táblázat kereteinek összevonása"] },
+      { category: "css", term: ":root", meaning: "A dokumentum gyökérelemét kiválasztó pszeudoosztály; gyakran itt deklarálunk CSS-változókat.", aliases: ["root", "pszeudoosztály", "változók"] },
+      { category: "css", term: "border-color", meaning: "Az elem keretének színét állítja be.", aliases: ["border színe", "keret színe"] },
+      { category: "css", term: "box-sizing", meaning: "Meghatározza, hogy a szélesség és magasság számításába beleszámítson-e a padding és a border.", aliases: ["doboz megjelenési formája", "doboz méretezése"] },
+      { category: "css", term: "border-top-color", meaning: "A felső keret színét állítja be.", aliases: ["felső border színe", "felső keret színe"] },
+      { category: "css", term: "font", meaning: "Több betűbeállítást rövidíthet le, például a stílust, vastagságot, méretet és betűcsaládot.", aliases: ["betű", "betű beállítás"] },
+      { category: "algorithm", term: "Algoritmus", meaning: "Egy probléma megoldásához szükséges, véges és egyértelmű lépések sorozata.", aliases: ["algoritmus"] },
+      { category: "algorithm", term: "Pszeudokód", meaning: "Egy algoritmus programozási nyelvtől független, egyszerű leírása.", aliases: ["pszeudokód", "pseudo code", "pseudokód"] },
+      { category: "algorithm", term: "Folyamatábra", meaning: "Az algoritmus lépéseit, döntéseit és azok sorrendjét alakzatokkal és nyilakkal mutatja be.", aliases: ["folyamatábra", "folyamat abra"] },
+      { category: "algorithm", term: "Ovális (Start / End)", meaning: "A folyamatábrában az algoritmus kezdetét vagy végét jelöli.", aliases: ["ovális", "start/end", "start end", "kezdés és vég"] },
+      { category: "algorithm", term: "Téglalap", meaning: "A folyamatábrában egy végrehajtandó műveletet vagy utasítást jelöl.", aliases: ["téglalap", "muvelet", "művelet"] },
+      { category: "algorithm", term: "Rombusz", meaning: "A folyamatábrában egy feltételt vagy döntést jelöl; innen például igen és nem ág indulhat.", aliases: ["rombusz", "döntés", "feltétel"] },
+      { category: "algorithm", term: "Paralelogramma", meaning: "A folyamatábrában adat bevitelét vagy eredmény kiírását jelöli.", aliases: ["paralelogramma", "bemenet", "kimenet", "bemenet/kimenet"] },
+      { category: "algorithm", term: "for ciklus", meaning: "Számlálós ciklus, amelyet általában előre ismert számú ismétlésre használunk.", aliases: ["for", "for ciklus", "számlálós ciklus", "szamlalos ciklus"] },
+      { category: "algorithm", term: "while ciklus", meaning: "Elöltesztelős ciklus: a feltételt minden ismétlés előtt ellenőrzi, ezért akár egyszer sem futhat le.", aliases: ["while", "while ciklus", "elöltesztelős ciklus", "eloltesztelos ciklus"] },
+      { category: "algorithm", term: "do-while ciklus", meaning: "Hátultesztelős ciklus: a feltételt a ciklusmag után ellenőrzi, ezért legalább egyszer lefut.", aliases: ["do while", "do-while", "hátultesztelős ciklus", "hatultesztelos ciklus"] },
+      { category: "algorithm", term: "Ciklus", meaning: "Utasítások ismételt végrehajtása; a ciklus leáll, ha elfogy az ismétlésszám vagy hamissá válik a feltétel.", aliases: ["ciklus", "ismétlés", "ismetles"] },
+      { category: "algorithm", term: "Ciklusfeltétel", meaning: "Az a logikai vizsgálat, amely meghatározza, hogy a ciklus folytatódjon vagy befejeződjön.", aliases: ["ciklusfeltétel", "ciklus feltétel", "feltétel"] },
+      { category: "algorithm", term: "Buborékrendezés", meaning: "A szomszédos elemeket hasonlítja össze, és ha rossz sorrendben vannak, felcseréli őket. A menet ismétlődik, amíg sorba nem rendeződnek.", aliases: ["buborékrendezés", "buborekrendezes", "bubble sort"] },
+      { category: "algorithm", term: "Összehasonlítás", meaning: "A buborékrendezésben két szomszédos érték sorrendjének ellenőrzése.", aliases: ["összehasonlítás", "osszehasonlitas"] },
+      { category: "algorithm", term: "Csere", meaning: "A buborékrendezésben két rossz sorrendben álló szomszédos elem helyének felcserélése.", aliases: ["csere", "elemek cseréje", "felcserélés"] }
+    ];
+
+    const explanations = {
+      "<br>": "A br sortörést szúr be anélkül, hogy új bekezdést kezdene. Olyan tartalomnál hasznos, ahol a sorváltás a szöveg része, például egy cím vagy verssor tördelésénél.",
+      "<sup>": "A sup a környező szöveg alapvonalához képest feljebb helyezi a tartalmát. Ezért használható például matematikai kitevő vagy lábjegyzetjel megjelenítésére.",
+      "<sub>": "A sub tartalmát az alapvonal alá helyezi, így képletekben és jelölésekben alsó indexet lehet vele készíteni. A szám vagy betű továbbra is a szöveg része marad.",
+      "<h1>–<h6>": "Ezek a címsorok hierarchiát adnak a dokumentumnak: a h1 a főcím, a h2 az alfejezet címe, a további szintek pedig egyre mélyebb részeket jelölnek. A szintet a tartalom szerkezete alapján érdemes kiválasztani.",
+      "<i>": "Az i a szöveget tipográfiailag elkülöníti, rendszerint dőlt megjelenítéssel. Önmagában nem jelenti azt, hogy a szöveg fontosabb a környezeténél.",
+      "<img>": "A kép fájljának helyét az src attribútum adja meg, az alt attribútum pedig szöveges leírást biztosít, ha a kép nem tölthető be vagy a látogató képernyőolvasót használ.",
+      "<!-- megjegyzés -->": "A kommentet a HTML-forrásban lehet elolvasni, de az oldal normál megjelenítésében nem látszik. Fejlesztés közbeni jegyzetelésre használható; a látogatónak szánt szöveghez nem megfelelő.",
+      "<body>": "A dokumentumnak egy body része van, ebbe kerül az oldal megjelenítendő tartalma. A böngésző a head beállításaival együtt ebből építi fel a weboldalt.",
+      "<strong>": "A strong szemantikailag fontosnak jelöli a szöveget, ezért a képernyőolvasók is hangsúlyosként kezelhetik. A félkövér megjelenés ennek gyakori alapértelmezett formája.",
+      "<p>": "A p összetartozó mondatokat foglal bekezdésbe, és a böngésző általában térközt hagy a bekezdések között. Hosszabb prózaszöveget érdemes ilyen részekre tagolni.",
+      "<title>": "A title a dokumentum metaadatai közé tartozik, nem az oldal törzsében megjelenő főcím. A böngészőfülön és a könyvjelzőkben segít felismerni az oldalt.",
+      "<div>": "A div általános tárolóelem: több elemet foghat össze, hogy közösen lehessen őket elrendezni vagy formázni. Nincs saját jelentése, ezért csak akkor célszerű használni, ha nincs megfelelőbb tartalmi tag.",
+      "<head>": "A head olyan beállításokat és hivatkozásokat tartalmaz, amelyek leírják a dokumentumot vagy további fájlokat kapcsolnak hozzá. Az ide írt tartalom többnyire nem jelenik meg az oldal törzsében.",
+      "<table>": "A table sorokba és oszlopokba rendezett, összetartozó adatokat jelenít meg. Összehasonlítható értékekhez vagy táblázatos adatokhoz való, nem az oldal teljes elrendezésének kialakítására.",
+      "<b>": "A b vizuálisan félkövérre formázza a szöveget, de nem ad neki külön szemantikai fontosságot. Ha a szöveg valóban hangsúlyos, azt a strong jelentése fejezi ki.",
+      "<!DOCTYPE html>": "Ezt a dokumentum elején kell megadni, hogy a böngésző szabványos HTML-megjelenítési módot válasszon. Nem HTML-tartalmi elem, hanem a dokumentum típusát jelző deklaráció.",
+      "<link>": "A link a head részben külső erőforrást kapcsolhat a dokumentumhoz. Stíluslapnál a rel attribútum jelzi a kapcsolat típusát, a href pedig a fájl helyét.",
+      "<ol>": "Az ol olyan lista, ahol az elemek sorrendje számít, ezért a böngésző sorszámokat jelenít meg. Például lépések vagy rangsorolt eredmények felsorolására alkalmas.",
+      "<li>": "A li egyetlen elemet jelent egy felsorolásban, és rendszerint ol vagy ul szülőelembe kerül. A sorszámot vagy felsorolásjelet a lista típusa határozza meg.",
+      "<ul>": "Az ul olyan felsorolást készít, ahol az elemek sorrendje nem lényeges. A benne lévő li elemeket a böngésző általában jelölőponttal mutatja.",
+      "<a>": "A hivatkozás célját a href attribútum adja meg, a tag belsejében lévő szövegre vagy tartalomra pedig rá lehet kattintani. Így lehet másik oldalra, fájlra vagy oldalon belüli pontra navigálni.",
+      "<tr>": "A tr egy teljes sort fog össze a táblázatban. A soron belüli th és td elemek határozzák meg, hogy fejléc- vagy adatcellák jelenjenek meg.",
+      "<td>": "A td egy táblázat adatcellája, amely egy sor és egy oszlop metszetében jelenik meg. A jelentés nélküli adatcellát a fejléccellát jelölő th-tól különbözteti meg.",
+      "<thead>": "A thead a táblázat oszlopait leíró fejlécsorokat csoportosítja. Ezzel a táblázat szerkezete világosabbá válik a böngészőnek és a kisegítő technológiáknak.",
+      "<tbody>": "A tbody a táblázat fő adatsorait fogja össze, elkülönítve azokat a fejléctől és az esetleges összesítő lábrésztől. Hosszú táblázatoknál a böngésző ezt a részt külön is tudja kezelni.",
+      "<th>": "A th olyan cella, amely megnevezi az adott sort vagy oszlopot. A böngésző megjelenés mellett a cellát fejlécnek ismeri fel, így az adatok kapcsolata érthetőbbé válik.",
+      "<tfoot>": "A tfoot a táblázat összegző vagy záró sorait tartalmazza, például egy oszlop végösszegét. Szerkezetileg elkülöníti ezeket a táblázat fő adataitól.",
+      "<html>": "Az html a teljes dokumentum legkülső eleme; benne található a head és a body. A lang attribútumon keresztül a dokumentum nyelvét is meg lehet adni rajta.",
+      "<meta charset=\"UTF-8\">": "A karakterkódolás megmondja a böngészőnek, hogyan olvassa a fájl bájtjait szövegként. Az UTF-8 beállítás segít, hogy az ékezetes betűk is helyesen jelenjenek meg.",
+      "border-radius": "A megadott érték a keret sarkainak ívét szabályozza; nagyobb értékkel kerekebb sarkot kapsz. A tulajdonság a tartalom jelentését nem módosítja, csak a megjelenést.",
+      "margin": "A margin az elem külső oldalán hagy helyet, ezért a szomszédos elemek távolságának beállítására való. A paddingtől eltérően nem az elem tartalma és a kerete közötti területet növeli.",
+      "background-color": "Ez a szín az elem hátterére kerül a tartalom mögé. Ha háttérképet is használsz, a szín annak betöltése előtt vagy a kép átlátszó részein is látszódhat.",
+      "background-size": "Ezzel szabályozható, mekkora területet foglaljon el a háttérkép. A cover kitölti a hátteret, a contain pedig úgy méretez, hogy a teljes kép látható maradjon.",
+      "align-items": "A flex- vagy grid-konténer elemeit igazítja a keresztirányú tengely mentén. Flex iránya row esetén ez többnyire függőleges igazítás, column esetén pedig vízszintes.",
+      "text-align": "A szöveget és más soron belüli tartalmat igazítja az elem rendelkezésre álló szélességén belül. Nem a különálló flex- vagy grid-gyermekek elrendezését vezérli.",
+      "padding": "A padding a tartalom körüli belső helyet növeli, így a szöveg nem tapad közvetlenül a kerethez. A háttérszín ezt a területet is kitölti.",
+      "font-size": "A betűméret azt szabályozza, mekkora helyet foglaljon el a szöveg karaktereinek magassága. Relatív egységgel a méret a környező tipográfiához is igazítható.",
+      "vertical-align": "Sorban futó szövegrészek vagy táblázatcellák függőleges viszonyát igazítja, például az alapvonalhoz képest. Nem általános függőleges középre igazító eszköz minden elrendezéshez.",
+      "gap": "A gap a flex- vagy grid-konténer közvetlen gyermekei közötti következetes rést állítja be. Nem kell minden gyermekre külön margót tenni, és a konténer szélén nem hoz létre külső térközt.",
+      "font-family": "Betűcsaládokat sorban is megadhatsz: ha az első nem érhető el, a böngésző a következővel próbálkozik. Az utolsó általános családnév tartalékot ad eltérő eszközökön.",
+      "width": "A width a doboz vízszintes méretét állítja, de a tényleges teljes szélesség a box-sizing beállításától is függ. Rugalmas értékekkel a méret a rendelkezésre álló helyhez igazítható.",
+      "color": "A color az elem előtérszínét, leggyakrabban a benne lévő szöveg színét adja meg. Sok gyermekelem örökli ezt az értéket, amíg saját színt nem kap.",
+      ".név": "A ponttal kezdődő szelektor az adott class értékkel megjelölt elemeket választja ki. Ugyanazt az osztályt több elem is használhatja, ezért közös megjelenéshez praktikus.",
+      "font-style": "A font-style a betű alakját változtatja, például normál vagy dőlt változatra. Nem a betű vastagságát állítja, arra külön tulajdonság való.",
+      "border": "A border rövidített beállításként a keret vastagságát, vonalstílusát és színét foglalhatja össze. Látható kerethez vonalstílust is kell megadni, mert annak alapértéke nincs.",
+      "#név": "A kettőskereszt utáni szelektor egy id érték alapján céloz elemet. Az id-t egyedi azonosítónak szánjuk, míg egy class több elemen is ismétlődhet.",
+      "height": "A height a doboz függőleges méretét szabályozza. Rögzített magasság helyett néha érdemes a tartalomhoz igazodó méretet hagyni, hogy a szöveg ne lógjon ki.",
+      "font-weight": "A font-weight a betű vastagságát állítja, például normál vagy félkövér fokozatra. A pontos eredmény attól is függ, milyen vastagságú változatok érhetők el a betűcsaládban.",
+      "box-shadow": "Az árnyék a doboz mögötti rétegként jelenik meg, és mélységérzetet adhat az elemnek. Önmagában nem foglal több helyet az elrendezésben.",
+      "z-index": "Az egymást fedő elemek festési sorrendjét befolyásolja: a nagyobb érték jellemzően előrébb kerül ugyanabban a rétegkörnyezetben. Külön stacking context esetén az értékeket nem lehet egyszerűen összehasonlítani.",
+      "border-collapse": "A táblázat celláinak érintkező kereteit egyetlen keretté vonhatja össze. Ezért gyakran használják, ha a cellák között nem szeretnénk dupla vonalakat.",
+      ":root": "A :root az oldal legfelső HTML-elemét választja ki, így az itt megadott CSS-változók az egész dokumentumból elérhetők. A változók nevét két kötőjel vezeti be.",
+      "border-color": "A keret oldalainak színét állítja be; egy, két, három vagy négy értékkel különböző oldalak színei is megadhatók. A szín csak akkor látszik, ha a keretnek van látható stílusa és vastagsága.",
+      "box-sizing": "A content-box a megadott szélességhez hozzáadja a belső térközt és a keretet, a border-box pedig ezeket is beleszámítja a méretbe. Utóbbi kiszámíthatóbbá teszi a dobozok méretezését.",
+      "border-top-color": "Csak a keret felső oldalának színét módosítja, a többi oldalt érintetlenül hagyja. A felső keretnek ettől függetlenül látható vonalstílusra és vastagságra is szüksége van.",
+      "font": "A font rövidített tulajdonság több betűbeállítást fog össze egy deklarációban, ezért tömör, de a részek sorrendje számít. Egy új font érték a korábbi, ugyanebbe a rövidítésbe tartozó beállításokat is felülírhatja.",
+      "Algoritmus": "Egy jól meghatározott algoritmusnak van kezdete, véges számú lépése és egyértelmű szabályai. Ugyanazokra a bemeneti adatokra a lépések követése kiszámítható megoldást ad.",
+      "Pszeudokód": "A pszeudokód a megoldás logikáját írja le anélkül, hogy egy konkrét programnyelv pontos szintaxisát kellene követni. Emiatt tervezéskor könnyű áttekinteni és később kódra fordítani.",
+      "Folyamatábra": "A nyilak mutatják a végrehajtás útját, az eltérő alakzatok pedig a lépés típusát. Így egy összetettebb algoritmus elágazásai és ismétlései is áttekinthetők.",
+      "Ovális (Start / End)": "Az ovális alakzatból indul a folyamat, és ezzel jelöljük a befejezését is. Segít felismerni, hol kezdődik a végrehajtás, és melyik ponton ér véget.",
+      "Téglalap": "A téglalap belsejébe kerül az elvégzendő művelet, például egy számítás vagy egy változó értékének módosítása. A nyilak határozzák meg, melyik lépés után következik.",
+      "Rombusz": "A rombusz egy eldöntendő kérdést tartalmaz, amelynek eredményétől függ a további út. A kimenő ágakat általában igen/nem vagy igaz/hamis jelöléssel különítjük el.",
+      "Paralelogramma": "A paralelogramma adatmozgást jelöl: érték érkezik a programba, vagy eredmény távozik belőle. Például a felhasználó megad egy számot, a program pedig kiírja a választ.",
+      "for ciklus": "A for ciklusban általában egy számláló induló értéke, folytatási feltétele és léptetése is megadható. Minden ismétlés után változik a számláló, így jól használható ismert számú lépéshez.",
+      "while ciklus": "A while először megvizsgálja a feltételt, és csak akkor hajtja végre a ciklusmagot, ha az igaz. A cikluson belüli változásnak végül hamissá kell tennie a feltételt, különben végtelen ismétlés alakulhat ki.",
+      "do-while ciklus": "A do-while előbb végrehajtja a ciklusmagot, majd ellenőrzi a feltételt. Ez akkor hasznos, ha a műveletnek legalább egyszer mindenképpen meg kell történnie, például egy adatbekérésnél.",
+      "Ciklus": "Egy ciklus ugyanazt a lépéscsoportot hajtja végre több alkalommal. Minden ismétlésnél fontos, hogy a számláló vagy a vizsgált adatok változzanak, különben a leállási feltétel nem biztos, hogy bekövetkezik.",
+      "Ciklusfeltétel": "A feltétel logikai értéke dönti el, hogy az ismétlés folytatódjon-e. Elöltesztelős ciklusnál a törzs előtt, hátultesztelős ciklusnál pedig a törzs után vizsgáljuk meg.",
+      "Buborékrendezés": "Egy menet során a nagyobb értékek a sorozat vége felé haladnak, ahogy a szomszédos párokat újra és újra ellenőrizzük. A rendezett állapotot az jelzi, hogy egy teljes menetben már nincs szükség cserére.",
+      "Összehasonlítás": "A rendezés az összehasonlítás eredményéből tudja, hogy a pár megfelelő sorrendben van-e. Csak a sorozat szabályával ellentétes sorrend esetén szükséges beavatkozni.",
+      "Csere": "A csere megőrzi a két értéket, miközben felcseréli a helyüket a sorozatban. Buborékrendezésnél csak szomszédos elemeket cserélünk, ezért a módosítás lépésről lépésre halad."
+    };
+
+    const modeNames = { flash: "Tanulókártya", choice: "Feleletválasztós", type: "Írd be a választ", code: "Kódfelismerő" };
+    const categoryNames = { html: "HTML", css: "CSS", algorithm: "ALGORITMUS" };
+    const state = { mode: "flash", filter: "all", deck: [], position: 0, score: 0, wrongScore: 0, answered: false, flipped: false, sessionSize: 10 };
+    const questionEl = document.getElementById("question");
+    const questionTag = document.getElementById("question-tag");
+    const hintEl = document.getElementById("hint");
+    const answerZone = document.getElementById("answer-zone");
+    const feedback = document.getElementById("feedback");
+    const explanation = document.getElementById("explanation");
+    const explanationText = document.getElementById("explanation-text");
+    const reveal = document.getElementById("answer-reveal");
+    const selfCheck = document.getElementById("self-check");
+    const nextButton = document.getElementById("next-button");
+    const counter = document.getElementById("counter");
+    const scoreEl = document.getElementById("score");
+    const wrongScoreEl = document.getElementById("wrong-score");
+    const progressFill = document.getElementById("progress-fill");
+    const progressTrack = document.querySelector(".progress-track");
+    let selectedAnswer = null;
+
+    document.getElementById("all-count").textContent = items.length;
+    document.getElementById("html-count").textContent = items.filter(item => item.category === "html").length;
+    document.getElementById("css-count").textContent = items.filter(item => item.category === "css").length;
+    document.getElementById("algorithm-count").textContent = items.filter(item => item.category === "algorithm").length;
+
+    function shuffle(list) {
+      const result = [...list];
+      for (let index = result.length - 1; index > 0; index--) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
+      }
+      return result;
+    }
+
+    function normalize(value) {
+      return value.toLocaleLowerCase("hu-HU").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+    }
+
+    function startRound() {
+      const available = items.filter(item => state.filter === "all" || item.category === state.filter);
+      const shuffled = shuffle(available);
+      state.deck = shuffled.slice(0, Math.min(state.sessionSize, shuffled.length));
+      state.position = 0;
+      state.score = 0;
+      state.wrongScore = 0;
+      state.answered = false;
+      state.flipped = false;
+      scoreEl.textContent = "0";
+      wrongScoreEl.textContent = "0";
+      renderQuestion();
+    }
+
+    function currentItem() {
+      return state.deck[state.position];
+    }
+
+    function setFeedback(message, result) {
+      feedback.textContent = message;
+      feedback.className = `feedback${result ? ` ${result}` : ""}`;
+    }
+
+    function updateProgress() {
+      const total = state.deck.length;
+      const current = Math.min(state.position + (state.answered ? 1 : 0), total);
+      counter.textContent = total ? `${Math.min(state.position + 1, total)} / ${total}` : "0 / 0";
+      const percentage = total ? Math.round(current / total * 100) : 0;
+      progressFill.style.width = `${percentage}%`;
+      progressTrack.setAttribute("aria-valuenow", String(percentage));
+      nextButton.disabled = !state.answered;
+      nextButton.textContent = state.position >= total - 1 && state.answered ? "Kör vége ✓" : "Következő →";
+    }
+
+    function renderQuestion() {
+      const item = currentItem();
+      state.answered = false;
+      state.flipped = false;
+      selectedAnswer = null;
+      answerZone.replaceChildren();
+      reveal.classList.remove("visible");
+      explanation.classList.remove("visible");
+      explanationText.textContent = "";
+      selfCheck.classList.remove("visible");
+      setFeedback("");
+      document.getElementById("mode-title").textContent = modeNames[state.mode];
+      document.getElementById("question-area").style.animation = "none";
+      void document.getElementById("question-area").offsetWidth;
+      document.getElementById("question-area").style.animation = "";
+
+      if (!item) {
+        questionTag.textContent = "KÉSZ";
+        questionEl.textContent = "Nincs kérdés ebben a témakörben.";
+        questionEl.classList.remove("code");
+        hintEl.textContent = "Válassz másik szűrőt a folytatáshoz.";
+        nextButton.disabled = true;
+        return;
+      }
+
+      questionTag.textContent = `${categoryNames[item.category]} · ${state.mode === "code" ? "KÓDFELISMERÉS" : "GYAKORLÁS"}`;
+      questionEl.classList.toggle("code", state.mode === "code");
+      hintEl.textContent = "";
+
+      if (state.mode === "flash") {
+        questionEl.textContent = item.meaning;
+        hintEl.textContent = "Melyik tag vagy tulajdonság illik a leíráshoz?";
+        answerZone.innerHTML = '<button class="action-button" type="button" id="show-answer">Mutasd a választ</button>';
+        answerZone.querySelector("button").addEventListener("click", flipCard);
+      } else if (state.mode === "type") {
+        questionEl.textContent = item.meaning;
+        hintEl.textContent = "Írd be a hozzá tartozó taget vagy tulajdonságot.";
+        answerZone.innerHTML = '<form class="answer-form" id="answer-form"><label class="sr-only" for="answer-input">A válaszod</label><input class="answer-input" id="answer-input" autocomplete="off" placeholder="Írd ide a választ…"><button class="action-button" type="submit">Ellenőrzés</button></form>';
+        answerZone.querySelector("form").addEventListener("submit", checkTypedAnswer);
+        answerZone.querySelector("input").focus({ preventScroll: true });
+      } else {
+        questionEl.textContent = state.mode === "code" ? item.term : item.meaning;
+        hintEl.textContent = state.mode === "code" ? "Mit jelent ez a tag vagy tulajdonság?" : "Válaszd ki a helyes taget vagy tulajdonságot.";
+        renderChoices(item);
+      }
+      updateProgress();
+    }
+
+    function flipCard() {
+      if (state.answered) return;
+      state.flipped = true;
+      reveal.textContent = currentItem().term;
+      reveal.classList.add("visible");
+      selfCheck.classList.add("visible");
+      answerZone.replaceChildren();
+      updateProgress();
+    }
+
+    function markAnswer(correct, message) {
+      if (state.answered) return;
+      state.answered = true;
+      if (correct) {
+        state.score += 1;
+        scoreEl.textContent = String(state.score);
+      } else {
+        state.wrongScore += 1;
+        wrongScoreEl.textContent = String(state.wrongScore);
+      }
+      setFeedback(message, correct ? "good" : "bad");
+      explanationText.textContent = explanations[currentItem().term];
+      explanation.classList.add("visible");
+      updateProgress();
+    }
+
+    function renderChoices(item) {
+      const options = shuffle([item, ...shuffle(items.filter(other => other.category === item.category && other !== item)).slice(0, 3)]);
+      answerZone.innerHTML = '<div class="choice-list"></div>';
+      const list = answerZone.querySelector(".choice-list");
+      options.forEach(option => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice-button";
+        button.textContent = state.mode === "code" ? option.meaning : option.term;
+        button.addEventListener("click", () => {
+          if (state.answered) return;
+          const correct = option === item;
+          button.classList.add(correct ? "correct" : "wrong");
+          list.querySelectorAll("button").forEach(choice => {
+            choice.disabled = true;
+            if (choice !== button && choice.textContent === (state.mode === "code" ? item.meaning : item.term)) choice.classList.add("correct");
+          });
+          markAnswer(correct, correct ? "Helyes, ügyes!" : `Most nem. A helyes válasz: ${item.term}`);
+        });
+        list.append(button);
+      });
+    }
+
+    function checkTypedAnswer(event) {
+      event.preventDefault();
+      if (state.answered) return;
+      const item = currentItem();
+      const value = normalize(answerZone.querySelector("input").value);
+      if (!value) {
+        setFeedback("Írj be egy választ!", "bad");
+        return;
+      }
+      const correctAnswers = [item.term, ...item.aliases].map(normalize);
+      const correct = correctAnswers.includes(value);
+      markAnswer(correct, correct ? "Helyes, ügyes!" : `A helyes válasz: ${item.term}`);
+      answerZone.querySelector("input").disabled = true;
+      answerZone.querySelector("button").disabled = true;
+    }
+
+    document.querySelectorAll(".mode-button").forEach(button => {
+      button.addEventListener("click", () => {
+        state.mode = button.dataset.mode;
+        document.querySelectorAll(".mode-button").forEach(option => option.setAttribute("aria-pressed", String(option === button)));
+        startRound();
+      });
+    });
+
+    document.querySelectorAll(".filter-button").forEach(button => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filter;
+        document.querySelectorAll(".filter-button").forEach(option => option.setAttribute("aria-pressed", String(option === button)));
+        startRound();
+      });
+    });
+
+    selfCheck.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        const correct = button.dataset.result === "right";
+        markAnswer(correct, correct ? "Szép munka, ezt tudtad!" : "Semmi gond, a következő körben újra előkerülhet.");
+        selfCheck.classList.remove("visible");
+      });
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (state.position >= state.deck.length - 1) {
+        startRound();
+        return;
+      }
+      state.position += 1;
+      renderQuestion();
+    });
+
+    startRound();
+  </script>
+</body>
+</html>
